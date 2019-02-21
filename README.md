@@ -1,4 +1,4 @@
-# test_edo
-[![pipeline status](https://gitlab.com/bokjo/test_edo/badges/master/pipeline.svg)](https://gitlab.com/bokjo/test_edo/commits/master)
+# edo-api
+[![pipeline status](https://gitlab.com/bokjo/edo-api/badges/master/pipeline.svg)](https://gitlab.com/bokjo/edo-api/commits/master)
 
 EDO test api
