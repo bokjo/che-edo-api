@@ -1,0 +1,6 @@
+/vagrant
+*.exe
+debug
+/cover
+.vscode
+*.md
