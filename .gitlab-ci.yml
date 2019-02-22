@@ -56,9 +56,22 @@ compile:
 deploy_staging:
   stage: deploy
   script:
-    - echo "Deploy to staging server"
+    - echo "Job - $CI_JOB_ID"
+    - echo "Token - $CI_JOB_TOKEN"
+    - echo "serverUrl - $CI_SERVER_URL"
+    - echo "namespace - $CI_PROJECT_NAMESPACE"
+    - echo "Project DIR - $CI_PROJECT_DIR "
+    - echo "Project name - $CI_PROJECT_NAME"
+    - echo "Project URL - $CI_PROJECT_URL"
+    - echo "Job Name - $CI_JOB_NAME"
+    - echo "Artifact - $PROJECT_URL/-/jobs/artifacts/$CI_JOB_ID/raw/edo-api?job=$CI_JOB_NAME"
+  tags:
+    - ansible     
   environment:
     name: staging
     url: http://test-edo.westeurope.cloudapp.azure.com
   only:
   - master
+  artifacts:
+      paths:
+        - edo-api
