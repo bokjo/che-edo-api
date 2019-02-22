@@ -55,6 +55,8 @@ compile:
 
 deploy_staging:
   stage: deploy
+  before_script:
+    - echo "Skipping the global script"
   script:
     - echo "Job - $CI_JOB_ID"
     - echo "Token - $CI_JOB_TOKEN"
