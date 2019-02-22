@@ -22,6 +22,7 @@ stages:
     - prepare
     - test
     - build
+    - deploy
 
 format:
     stage: prepare
@@ -51,3 +52,13 @@ compile:
     artifacts:
       paths:
         - edo-api
+
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploy to staging server"
+  environment:
+    name: staging
+    url: http://test-edo.westeurope.cloudapp.azure.com
+  only:
+  - master
