@@ -35,13 +35,18 @@ func (api *API) Init(username, password, dbname, host string) {
 }
 
 // Run the API
-func (api *API) Run() {
-	log.Fatal(http.ListenAndServe(":1234", api.Router))
+func (api *API) Run(port string) {
+	log.Fatal(http.ListenAndServe(":"+port, api.Router))
 }
 
 // TODO: move to separate endpoints file
 // initRoutes - initiates the api routes
 func (api *API) initRoutes() {
+
+	versionService := model.VersionService{}
+	versionHandler := handlers.VersionHandler{VersionService: versionService}
+
+	api.Router.HandleFunc("/version", versionHandler.GetVersion).Methods(http.MethodGet)
 
 	jobsService := model.JobsService{DB: api.Db}
 	jobsHandler := handlers.JobsHandler{JobsService: jobsService}

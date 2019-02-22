@@ -1,12 +1,22 @@
 package main
 
-import "gitlab.com/bokjo/test_edo/api"
+import (
+	"os"
+
+	"gitlab.com/bokjo/test_edo/api"
+)
 
 func main() {
 
-	edoapi := api.API{}
+	//TODO: Implement it as envirnmet variables or move it to a separate nonversioned config file
+	username := os.Getenv("EDOAPI_USERNAME")
+	password := os.Getenv("EDOAPI_PASSWORD")
+	database := os.Getenv("EDOAPI_DB")
+	host := os.Getenv("EDOAPI_HOST")
+	port := os.Getenv("EDOAPI_PORT")
 
-	//TODO: Implement it as envirnmet variables and move it to the api.go
-	edoapi.Init("postgres", "postgres", "edo-api", "db")
-	edoapi.Run()
+	edoapi := api.API{}
+	edoapi.Init(username, password, database, host)
+	edoapi.Run(port)
+
 }
