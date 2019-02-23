@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS jobs
+(
+id SERIAL,
+name TEXT NOT NULL,
+priority INT NOT NULL,
+state TEXT NOT NULL,	
+start_date TIMESTAMP NOT NULL,
+completion_date	TIMESTAMP NOT NULL,
+CONSTRAINT jobs_pkey PRIMARY KEY (id)
+);

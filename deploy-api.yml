@@ -1,0 +1,16 @@
+- hosts: api
+  tasks: 
+  - name: Move the api artifact to the appropriate folder
+    copy:
+        dest: /home/bokjo/api 
+        src: /home/bokjo/{{ artifact_path }}/edo-api
+  - name: Restart the EDO API service
+    systemd: 
+      name: edo-api
+      state: restarted
+      daemon_reload: yes
+  
+  - name: Enable EDO API service
+    systemd:
+      name: edo-api
+      enabled: yes    

@@ -67,6 +67,7 @@ deploy_staging:
     - echo "Project URL - $CI_PROJECT_URL"
     - echo "Job Name - $CI_JOB_NAME"
     - echo "Artifact - $PROJECT_URL/-/jobs/artifacts/$CI_JOB_ID/raw/edo-api?job=$CI_JOB_NAME"
+    - 'ansible-playbook deploy-api.yml --extra-vars "artifact_path=$CI_PROJECT_DIR'
   tags:
     - ansible     
   environment:
