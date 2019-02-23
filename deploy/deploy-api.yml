@@ -18,4 +18,5 @@
     systemd: 
       name: edo-api
       state: restarted
-      enabled: yes    
+      enabled: yes
+      daemon_reload: yes    

@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+
+  api:
+    #TODO: Consider building and pushing the image to GitLab registry!
+    image: edo-api:latest
+    ports:
+      - 1234
+    environment:
+      - SERVICE_PORTS=1234  
+    depends_on:
+      - db
+    deploy:
+     replicas: 3
+     update_config:
+       parallelism: 1
+       delay: 5s
+     restart_policy:
+       condition: on-failure
+       max_attempts: 3
+       window: 60s      
+    #volumes:
+    #- ./logs:/var/log
+    #networks:
+    #  - api
+
+  # TODO: Obsolete for stack swarm mode - remove    
+  lb:
+    image: dockercloud/haproxy
+    depends_on:
+      - api
+    #volumes:
+    #  - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9090:80
+    deploy:
+      placement:
+        constraints: [node.role == manager] 
+    #networks:
+    #  - api 
+
+  #TODO: Consider adding container for PGAdmin for easy management of the DB locally    
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: edo-api
+    deploy:
+     replicas: 1
+     update_config:
+       parallelism: 1
+       delay: 5s
+     restart_policy:
+       condition: on-failure
+       max_attempts: 3
+       window: 60s
+    ports:
+      - "5432:5432"
+    #networks:
+    #  - api  
+    #volumes:
+    #  - ./postgres/pg-data:/var/lib/postgresql/data
+    #  - ./postgres/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql   
+#networks:
+#  api:
+#    driver: overlay

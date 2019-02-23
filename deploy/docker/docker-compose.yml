@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  api:
+    #TODO: Consider building and pushing the image to GitLab registry!
+    #image: edo-api:latest
+    image: registry.gitlab.com/bokjo/test_edo
+    ports:
+      - ${EDOAPI_PORT}
+    environment:
+      - SERVICE_PORTS=${EDOAPI_PORT}
+      - EDOAPI_USERNAME
+      - EDOAPI_PASSWORD
+      - EDOAPI_DB
+      - EDOAPI_HOST
+      - EDOAPI_PORT  
+    depends_on:
+      - db      
+    volumes:
+    - ./logs:/var/log
+
+  lb:
+    image: dockercloud/haproxy
+    depends_on:
+      - api
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9090:80
+
+  #TODO: Consider adding container for PGAdmin for easy management of the DB locally    
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: ${EDOAPI_PASSWORD}
+      POSTGRES_USER: ${EDOAPI_USERNAME}
+      POSTGRES_DB: ${EDOAPI_DB}
+    ports:
+      - "5432:5432"  
+    volumes:
+      - ./postgres/pg-data:/var/lib/postgresql/data
+      - ./postgres/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
