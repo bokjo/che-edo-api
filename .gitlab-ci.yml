@@ -59,7 +59,7 @@ deploy_staging:
     - echo "Skipping the global script"
   script:
     - 'echo -e "EDOAPI_USERNAME=$EDOAPI_USERNAME\nEDOAPI_PASSWORD=$EDOAPI_PASSWORD\nEDOAPI_DB=$EDOAPI_DB\nEDOAPI_HOST=$EDOAPI_HOST\nEDOAPI_PORT=$EDOAPI_PORT\n" > edo-api.conf'
-    - 'ansible-playbook deploy/deploy-api.yml --extra-vars "artifact_path=$CI_PROJECT_DIR'
+    - 'ansible-playbook deploy/deploy-api.yml --extra-vars "artifact_path=$CI_PROJECT_DIR"'
   tags:
     - ansible     
   environment:
