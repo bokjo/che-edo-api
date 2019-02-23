@@ -33,13 +33,21 @@ func (js *JobsService) GetJob(id int) (*Job, error) {
 
 // CreateJob - create single job
 func (js *JobsService) CreateJob(priority int) (string, error) {
-	//job := js.Job
-	currentTime := time.Now().Local()
-	completedTime := time.Now().Local().Add(time.Second * 5)
-	const CreateSingleJobQuery = `INSERT INTO jobs(name, priority, state, start_date, completion_date) VALUES($1, $2, $3, $4, $5) RETURNING id`
-	// err := js.DB.QueryRow(CreateSingleJobQuery, job.Name, job.Priority, job.State, job.StartDate, job.CompletionDate).Scan(&job.ID)
+
 	var jobID string
-	err := js.DB.QueryRow(CreateSingleJobQuery, "JOB: test", priority, "COMPLETED", currentTime, completedTime).Scan(&jobID)
+	const CreateSingleJobQuery = `INSERT INTO jobs(name, priority, state, start_date, completion_date) VALUES($1, $2, $3, $4, $5) RETURNING id`
+
+	jobName := "[Generic job name]"
+	currentTime := time.Now().Local()
+	completedTime := time.Date(1900, time.January, 1, 0, 0, 0, 0, time.UTC)
+
+	stage := assignJobStage()
+
+	if stage == "COMPLETED" {
+		completedTime = generateRandomWorkTime(currentTime)
+	}
+
+	err := js.DB.QueryRow(CreateSingleJobQuery, jobName, priority, stage, currentTime, completedTime).Scan(&jobID)
 
 	return jobID, err
 }

@@ -1,0 +1,13 @@
+[Unit]
+Description=EDO API service
+After=network.target
+
+[Service]
+ExecStart=/home/bokjo/api/edo-api
+EnvironmentFile=/home/bokjo/api/edo-api.conf
+Type=simple
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

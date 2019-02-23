@@ -1,0 +1,21 @@
+- hosts: api
+  become: true
+  tasks: 
+
+  - name: Move the api artifact to the appropriate folder
+    copy:
+        dest: /home/bstojchevski/api 
+        src: /home/bstojchevski/{{ artifact_path }}/edo-api
+        mode: 0755     
+  
+  - name: Move the api service config to appropriate folder if not present
+    copy:
+        dest: /home/bstojchevski/api 
+        src: /home/bstojchevski/{{ artifact_path }}/edo-api.conf
+        force: no
+              
+  - name: Restart the EDO API service
+    systemd: 
+      name: edo-api
+      state: restarted
+      enabled: yes    
