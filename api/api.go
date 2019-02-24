@@ -43,6 +43,10 @@ func (api *API) Run(port string) {
 // initRoutes - initiates the api routes
 func (api *API) initRoutes() {
 
+	defaultHandler := handlers.DefaultHandler{}
+
+	api.Router.HandleFunc("/", defaultHandler.GetDefault).Methods(http.MethodGet)
+
 	versionService := model.VersionService{}
 	versionHandler := handlers.VersionHandler{VersionService: versionService}
 

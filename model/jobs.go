@@ -10,10 +10,10 @@ import (
 type Job struct {
 	ID             int    `json:"id"`
 	Name           string `json:"name"`
-	Priority       int    `json:"prioriry"`
+	Priority       int    `json:"priority"`
 	State          string `json:"state"`
-	StartDate      string `json:"start_date"`
-	CompletionDate string `json:"completion_date"`
+	StartDate      string `json:"started"`
+	CompletionDate string `json:"completed"`
 }
 
 //JobsService for handling Jobs
@@ -25,7 +25,7 @@ type JobsService struct {
 // GetJob - retrieve single job
 func (js *JobsService) GetJob(id int) (*Job, error) {
 	job := Job{}
-	const GetSingleJobQuery = `SELECT id, name, priority, state, start_date, completion_date FROM jobs WHERE id=$1`
+	const GetSingleJobQuery = `SELECT id, name, priority, state, started, completed FROM jobs WHERE id=$1`
 	err := js.DB.QueryRow(GetSingleJobQuery, id).Scan(&job.ID, &job.Name, &job.Priority, &job.State, &job.StartDate, &job.CompletionDate)
 
 	return &job, err
@@ -35,7 +35,7 @@ func (js *JobsService) GetJob(id int) (*Job, error) {
 func (js *JobsService) CreateJob(priority int) (string, error) {
 
 	var jobID string
-	const CreateSingleJobQuery = `INSERT INTO jobs(name, priority, state, start_date, completion_date) VALUES($1, $2, $3, $4, $5) RETURNING id`
+	const CreateSingleJobQuery = `INSERT INTO jobs(name, priority, state, started, completed) VALUES($1, $2, $3, $4, $5) RETURNING id`
 
 	jobName := "[Generic job name]"
 	currentTime := time.Now().Local()
@@ -56,7 +56,7 @@ func (js *JobsService) CreateJob(priority int) (string, error) {
 func (js *JobsService) UpdateJob(id int) error {
 
 	job := js.Job
-	const UpdateJobQuery = "UPDATE jobs SET name=$1, priority=$2, state=$3, start_date=$4, completed_date=$5"
+	const UpdateJobQuery = "UPDATE jobs SET name=$1, priority=$2, state=$3, started=$4, completed=$5"
 	_, err := js.DB.Exec(UpdateJobQuery, job.Name, job.Priority, job.State, job.StartDate, job.CompletionDate)
 
 	return err
@@ -74,7 +74,7 @@ func (js *JobsService) DeleteJob(id int) (sql.Result, error) {
 // GetJobs - return all jobs
 func (js *JobsService) GetJobs(sortBy string) ([]Job, error) {
 
-	SelectAllJobsQuery := "SELECT id, name, priority, state, start_date, completion_date FROM jobs "
+	SelectAllJobsQuery := "SELECT id, name, priority, state, started, completed FROM jobs "
 
 	if sortBy != "" {
 		SelectAllJobsQuery = SelectAllJobsQuery + fmt.Sprintf("ORDER BY %s DESC", sortBy)
