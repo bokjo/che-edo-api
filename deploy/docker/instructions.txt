@@ -1,0 +1,49 @@
+Local environment setup and inststructions
+
+I. DOCKER
+You must have docker and docker-compose installed
+
+--------
+Building
+
+--------
+Not required but good to know... the 'edo_api' docker image is present in the GitLab Registry 
+ 
+1. Clone the EDO API repository
+2. Navigate to the new repository folder /edo-api and make sure the Dockerfile is present
+3. run the script build.sh
+
+-------
+Running
+-------
+'export the ENV variables'
+
+export EDOAPI_USERNAME=postgres
+export EDOAPI_PASSWORD=postgres
+export EDOAPI_DB=edo-api
+export EDOAPI_HOST=db
+export EDOAPI_PORT=1234
+export PGPASSWORD=postgres
+
+1. initialte new docker swarm 
+docker swarm init
+
+2. navigate to the edo api repository -> /edo-api/deploy/docker and run the ./run.sh
+
+./run.sh
+
+docker service ls
+
+curl -X GET localhost:9090/version -> to chech if the api is up and running
+
+3. scale the api service for testing
+docker service scale edo_api_api=5
+
+[Chech the 'localhost:9090/version' for the loadbalancing]
+
+
+4. update the edo_api service with new image
+docker service update --image edo-api:latest edo_api_api
+
+5. destroy the stack with stopstack.sh  -> [docker stack rm edo_api]
+./stopstack.sh
