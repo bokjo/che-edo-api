@@ -5,7 +5,7 @@ services:
   api:
     #TODO: Consider building and pushing the image to GitLab registry!
     #image: edo-api:latest
-    image: registry.gitlab.com/bokjo/test_edo
+    image: registry.gitlab.com/bokjo/edo-api
     ports:
       - ${EDOAPI_PORT}
     environment:
@@ -17,8 +17,8 @@ services:
       - EDOAPI_PORT  
     depends_on:
       - db      
-    volumes:
-    - ./logs:/var/log
+    #volumes:
+    #- ./logs:/var/log
 
   lb:
     image: dockercloud/haproxy
@@ -38,6 +38,6 @@ services:
       POSTGRES_DB: ${EDOAPI_DB}
     ports:
       - "5432:5432"  
-    volumes:
-      - ./postgres/pg-data:/var/lib/postgresql/data
-      - ./postgres/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+    #volumes:
+    #  - ./postgres/pg-data:/var/lib/postgresql/data
+    #  - ./postgres/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql

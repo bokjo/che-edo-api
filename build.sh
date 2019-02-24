@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t edo-api:latest .
+docker build -t registry.gitlab.com/bokjo/edo-api .
