@@ -58,4 +58,6 @@ func (api *API) initRoutes() {
 	api.Router.HandleFunc("/jobs", jobsHandler.GetJobs).Methods(http.MethodGet)
 	api.Router.HandleFunc("/jobs", jobsHandler.CreateJob).Methods(http.MethodPost)
 
+	notFoundHandler := handlers.NotFoundHandler{}
+	api.Router.NotFoundHandler = http.HandlerFunc(notFoundHandler.NotFound)
 }
