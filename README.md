@@ -1,4 +1,3 @@
-# edo-api
-[![pipeline status](https://gitlab.com/bokjo/edo-api/badges/master/pipeline.svg)](https://gitlab.com/bokjo/edo-api/commits/master)
+# CHE EDO test api
 
-EDO test api
+Port from GitLab, 2 years old job interview project that needs to be rechecked and improved!
